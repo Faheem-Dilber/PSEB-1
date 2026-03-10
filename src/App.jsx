@@ -1,9 +1,25 @@
-import { Button } from "./components/ui/button.jsx";
+import { useState } from "react";
+import Login from "./components/Login.jsx";
+import Home from "./components/Home.jsx";
+
 function App() {
-  return (
-    <div>
-      <Button variant="outline">Hello World</Button>
-    </div>
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsLoggedIn(false);
+  };
+
+  return isLoggedIn ? (
+    <Home user={user} onLogout={handleLogout} />
+  ) : (
+    <Login onLoginSuccess={handleLoginSuccess} />
   );
 }
 
