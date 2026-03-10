@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
+import { Input } from "./ui/input.jsx";
+import { Alert } from "./ui/alert.jsx";
 import { mockLoginAPI } from "../services/mockAPI.js";
 
 export default function Login({ onLoginSuccess }) {
@@ -15,6 +18,8 @@ export default function Login({ onLoginSuccess }) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(input) || input.toLowerCase() === "kminchelle";
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +62,7 @@ export default function Login({ onLoginSuccess }) {
           onLoginSuccess(result.data);
           setEmail("");
           setPassword("");
+          navigate("/home");
         } else {
           // Login failed
           console.log("Full error response:", result.data);
@@ -85,9 +91,9 @@ export default function Login({ onLoginSuccess }) {
         </h1>
 
         {apiError && (
-          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          <Alert variant="destructive" className="mb-6">
             {apiError}
-          </div>
+          </Alert>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -99,18 +105,15 @@ export default function Login({ onLoginSuccess }) {
             >
               Email or Username
             </label>
-            <input
+            <Input
               type="text"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="kminchelle"
               disabled={loading}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ${
-                errors.email
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300"
-              } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              variant={errors.email ? "destructive" : "default"}
+              className={`${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -128,18 +131,15 @@ export default function Login({ onLoginSuccess }) {
             >
               Password
             </label>
-            <input
+            <Input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               disabled={loading}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ${
-                errors.password
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300"
-              } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              variant={errors.password ? "destructive" : "default"}
+              className={`${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
