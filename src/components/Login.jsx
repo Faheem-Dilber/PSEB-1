@@ -2,8 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
 import { Input } from "./ui/input.jsx";
-import { Alert } from "./ui/alert.jsx";
+// import { Alert } from "./ui/alert.jsx";
+import { Alert, AlertTitle, AlertDescription } from "./ui/alert.jsx";
+import { AlertCircle } from "lucide-react";
 import { mockLoginAPI } from "../services/mockAPI.js";
+
 
 export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -57,6 +60,9 @@ export default function Login({ onLoginSuccess }) {
         console.log("Response:", result.data, "Status:", result.ok);
 
         if (result.ok && result.data.accessToken) {
+          // Save Login Session
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("user", JSON.stringify(result.data));
           // Login successful
           console.log("Login successful:", result.data);
           onLoginSuccess(result.data);
@@ -66,11 +72,17 @@ export default function Login({ onLoginSuccess }) {
         } else {
           // Login failed
           console.log("Full error response:", result.data);
+          // console.log("Full error response:", result.data);
           setApiError(
-            result.data.message || 
-            result.data.error || 
+            result?.data?.message || 
+            result?.data?.error || 
             "Invalid credentials. Please try again."
           );
+          // setApiError(
+          //   result.data.message || 
+          //   result.data.error || 
+          //   "Invalid credentials. Please try again."
+          // );
         }
       } catch (error) {
         setApiError("An error occurred. Please try again.");
@@ -92,7 +104,9 @@ export default function Login({ onLoginSuccess }) {
 
         {apiError && (
           <Alert variant="destructive" className="mb-6">
-            {apiError}
+            <AlertCircle className="h-4 w-4" /> 
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{apiError}</AlertDescription>
           </Alert>
         )}
 
@@ -110,7 +124,7 @@ export default function Login({ onLoginSuccess }) {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="kminchelle"
+              placeholder="Enter your email or username"
               disabled={loading}
               variant={errors.email ? "destructive" : "default"}
               className={`${loading ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -136,7 +150,7 @@ export default function Login({ onLoginSuccess }) {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Enter your password"
               disabled={loading}
               variant={errors.password ? "destructive" : "default"}
               className={`${loading ? "opacity-50 cursor-not-allowed" : ""}`}

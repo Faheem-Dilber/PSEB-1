@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import Home from "./components/Home.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   const [user, setUser] = useState(null);
 
+  // Load user from localStorage on refresh
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const handleLoginSuccess = (userData) => {
     setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("isLoggedIn", "true");
   };
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("isLoggedIn");
   };
 
   return (
@@ -26,17 +39,17 @@ function App() {
           )
         }
       />
+
       <Route
         path="/home"
         element={
-          user ? (
+          <ProtectedRoute>
             <Home user={user} onLogout={handleLogout} />
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          </ProtectedRoute>
         }
       />
-      {/* default redirect to login */}
+
+      {/* Default redirect */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
