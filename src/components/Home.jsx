@@ -96,9 +96,7 @@ useEffect(() => {
               <img
                 src={product.thumbnail}
                 alt={product.title}
-                className="w-full h-40 object-cover rounded mb-4"
-              />
-
+                className="w-full h-40 object-cover rounded mb-4"/>
               <p className="text-indigo-600 font-semibold text-lg">
                 ${product.price}
               </p>

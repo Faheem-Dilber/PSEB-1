@@ -1,32 +1,52 @@
-import { Button } from "./ui/button.jsx";
+import React from 'react';
 
-export default function ProductCard({ title, price, image }) {
+const ProductCard = ({ title, price, image }) => {
   return (
-    <div className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
-      {/* Image Container */}
-      <div className="relative aspect-square overflow-hidden bg-gray-100">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
-
-      {/* Content */}
-      <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2 h-10">
-          {title}
-        </h3>
-        
-        <div className="mt-auto flex items-center justify-between">
-          <span className="text-lg font-bold text-indigo-600">
-            ${price.toFixed(2)}
-          </span>
-          <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700">
-            Add to Cart
-          </Button>
-        </div>
+    <div className="product-card" style={styles.card}>
+      <img 
+        src={image} 
+        alt={title} 
+        style={styles.image} 
+      />
+      <div className="product-info" style={styles.info}>
+        <h3 style={styles.title}>{title}</h3>
+        <p style={styles.price}>${price.toFixed(2)}</p>
       </div>
     </div>
   );
-}
+};
+
+// Basic inline styles for demonstration (you can replace this with regular CSS or Tailwind)
+const styles = {
+  card: {
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    padding: '16px',
+    maxWidth: '250px',
+    textAlign: 'center',
+    backgroundColor: '#fff',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+  },
+  image: {
+    width: '100%',
+    height: '150px',
+    objectFit: 'cover',
+    borderRadius: '4px'
+  },
+  info: {
+    marginTop: '12px'
+  },
+  title: {
+    fontSize: '1.1rem',
+    margin: '0 0 8px 0',
+    color: '#333'
+  },
+  price: {
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    margin: '0'
+  }
+};
+
+export default ProductCard;

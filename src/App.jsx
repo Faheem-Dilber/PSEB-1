@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import Home from "./components/Home.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   // Load user from localStorage on refresh
   useEffect(() => {
@@ -25,6 +26,7 @@ function App() {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
+    navigate("/login");
   };
 
   return (

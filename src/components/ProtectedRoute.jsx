@@ -4,7 +4,7 @@ export default function ProtectedRoute({ children }) {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   if (!isLoggedIn) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return children;
