@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
+import Dashboard from "./Dashboard";
 
 
 export default function Home({ user, onLogout }) {
@@ -49,30 +44,6 @@ useEffect(() => {
         </Button>
       </div>
 
-      {!loading && (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <Card key={product.id}>
-            <CardHeader>
-              <CardTitle>{product.title}</CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <img
-                src={product.thumbnail}
-                alt={product.title}
-                className="w-full h-40 object-cover rounded mb-3"
-              />
-
-              <p className="text-lg font-semibold text-indigo-600">
-                ${product.price}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    )}
-
       {/* Loading */}
       {loading && (
         <p className="text-center text-lg font-semibold">
@@ -80,32 +51,18 @@ useEffect(() => {
         </p>
       )}
 
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* when data is ready, render dashboard with controls */}
+      {!loading && !error && (
+        <Dashboard products={products} />
+      )}
 
-        {products.map((product) => (
-          <Card key={product.id} className="hover:shadow-lg transition">
-
-            <CardHeader>
-              <CardTitle className="text-lg line-clamp-1">
-                {product.title}
-              </CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <img
-                src={product.thumbnail}
-                alt={product.title}
-                className="w-full h-40 object-cover rounded mb-4"/>
-              <p className="text-indigo-600 font-semibold text-lg">
-                ${product.price}
-              </p>
-            </CardContent>
-
-          </Card>
-        ))}
-
-      </div>
+      {/* error state */}
+      {error && (
+        <Alert variant="destructive" className="mt-4">
+          <AlertCircle className="w-4 h-4" />
+          <span>{error}</span>
+        </Alert>
+      )}
     </div>
   );
 }
