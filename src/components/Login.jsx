@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
 import { Input } from "./ui/input.jsx";
-// import { Alert } from "./ui/alert.jsx";
 import { Alert, AlertTitle, AlertDescription } from "./ui/alert.jsx";
 import { AlertCircle } from "lucide-react";
 import { mockLoginAPI } from "../services/mockAPI.js";
@@ -78,11 +77,6 @@ export default function Login({ onLoginSuccess }) {
             result?.data?.error || 
             "Invalid credentials. Please try again."
           );
-          // setApiError(
-          //   result.data.message || 
-          //   result.data.error || 
-          //   "Invalid credentials. Please try again."
-          // );
         }
       } catch (error) {
         setApiError("An error occurred. Please try again.");

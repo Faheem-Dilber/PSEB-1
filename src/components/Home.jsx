@@ -15,14 +15,14 @@ useEffect(() => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // yahan aapki API call ho rahi hai
+      // API call to fetch products
       const response = await fetch('https://dummyjson.com/products');
-      if (!response.ok) throw new Error("Kuch ghalat ho gaya!");
+      if (!response.ok) throw new Error("Something went wrong !");
       
       const data = await response.json();
       setProducts(data.products);
     } catch (err) {
-      setError(err.message); // Error handler yahan kaam karega
+      setError(err.message); // Error handler works here
     } finally {
       setLoading(false);
     }
