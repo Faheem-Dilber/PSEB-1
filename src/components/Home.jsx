@@ -16,7 +16,7 @@ useEffect(() => {
     try {
       setLoading(true);
       // API call to fetch products
-      const response = await fetch('https://dummyjson.com/products');
+      const response = await fetch("https://dummyjson.com/products?limit=194");
       if (!response.ok) throw new Error("Something went wrong !");
       
       const data = await response.json();
