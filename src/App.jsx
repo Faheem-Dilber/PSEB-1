@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import Home from "./components/Home.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-
-  // Load user from localStorage on refresh
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const navigate = useNavigate();
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
@@ -46,7 +41,7 @@ function App() {
         path="/home"
         element={
           <ProtectedRoute>
-            <Home user={user} onLogout={handleLogout} />
+            <Home onLogout={handleLogout} />
           </ProtectedRoute>
         }
       />
