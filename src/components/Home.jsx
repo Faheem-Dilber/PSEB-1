@@ -3,8 +3,10 @@ import { Button } from "./ui/button";
 import { AlertCircle } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
 import Dashboard from "./Dashboard";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Home({ user, onLogout }) {
+  const { theme, toggleTheme } = useTheme();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,18 +41,27 @@ export default function Home({ user, onLogout }) {
   }, [page]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-200 p-8">
       
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mb-8">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <Button
-          onClick={onLogout}
-          disabled={loading}
-          className="bg-red-500 hover:bg-red-600 text-white"
-        >
-          Logout
-        </Button>
+
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={toggleTheme}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white"
+          >
+            {theme === "dark" ? "Light" : "Dark"} mode
+          </Button>
+          <Button
+            onClick={onLogout}
+            disabled={loading}
+            className="bg-red-500 hover:bg-red-600 text-white"
+          >
+            Logout
+          </Button>
+        </div>
       </div>
 
       {/* Loading */}

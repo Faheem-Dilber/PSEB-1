@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useTheme } from "@/context/ThemeContext";
+import { Button } from "./components/ui/button.jsx";
 import Login from "./components/Login.jsx";
 import Home from "./components/Home.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
+  const { theme, toggleTheme } = useTheme();
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -25,30 +28,32 @@ function App() {
   };
 
   return (
-    <Routes>
-      <Route
-        path="/login"
-        element={
-          user ? (
-            <Navigate to="/home" replace />
-          ) : (
-            <Login onLoginSuccess={handleLoginSuccess} />
-          )
-        }
-      />
+    <>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            user ? (
+              <Navigate to="/home" replace />
+            ) : (
+              <Login onLoginSuccess={handleLoginSuccess} />
+            )
+          }
+        />
 
-      <Route
-        path="/home"
-        element={
-          <ProtectedRoute>
-            <Home onLogout={handleLogout} />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Default redirect */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+        {/* Default redirect */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </>
   );
 }
 
